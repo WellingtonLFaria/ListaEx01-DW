@@ -1,45 +1,47 @@
-class userInput {
-    name:string;
-    type:string;
-    parent:HTMLElement;
-    label:HTMLLabelElement;
-    input:HTMLInputElement;
-    constructor(name:string, type:string, parent:HTMLElement) {
-        this.name = name;
-        this.type = type;
-        this.parent = parent;
-        this.label = document.createElement("label");
-        this.label.innerText = this.name + ":";
-        this.input = document.createElement("input");
-        this.input.type = this.type;
+const campoDistancia = document.getElementById("distancia");
+const campoQtd = document.getElementById("qtd");
+const campoRegiao = document.getElementById("regiao");
+const enviar = document.getElementById("enviar");
+const res = document.getElementById("res");
 
-        this.parent.appendChild(this.label);
-        this.parent.appendChild(this.input);
+enviar.onclick = () => {
+    let rastreamentos = document.getElementsByName("rastreamento");
+    let rastreamento:number;
+    for (let c in rastreamentos) {
+        if (rastreamentos[c].checked) {
+            rastreamento = Number(rastreamentos[c].value);
+        }
     }
-}
 
-class Button {
-    button:HTMLButtonElement;
-    parent:HTMLElement;
-    text:string;
-    constructor(text:string, parent:HTMLElement) {
-        this.button = document.createElement("button");
-        this.text = text;
-        this.parent = parent;
-        this.button.innerText = this.text;
-        this.parent.appendChild(this.button);
+    let distancia = Number(campoDistancia.value);
+    let qtd = Number(campoQtd.value);
+    let regiao = Number(campoRegiao.value);
+
+    let preco = 0;
+    let desconto = 0;
+    let resto = 0;
+
+    if (qtd > 1000) {
+        resto = qtd - 1000;
+        qtd = 1000;
+    };
+
+    switch (regiao) {
+        case 1:
+            preco = 1;
+            desconto = 1 - (1 * 10/100);
+            break;
+        case 2:
+            preco = 1.2;
+            desconto = 1.2 - (1.2 * 12/100);
+            break;
+        case 3:
+            preco = 1.3;
+            desconto = 1.3 - (1.3 * 13/100);
+            break;
     }
-}
 
-const distancia = new userInput("Distância(Km)", "number", document.body);
-const qtd_peças = new userInput("Quantidade de peças", "number", document.body);
-const regiao = new userInput("Região", "number", document.body);
+    let precoTotal = (qtd * preco) + (resto * desconto) + rastreamento;
 
-const button = new Button("Enviar", document.body);
-
-button.button.onclick = () => {
-    let dist:number = Number(distancia.input.value);
-    let qtd:number = Number(qtd_peças.input.value);
-    let reg:number = Number(regiao.input.value);
-    console.log(dist, qtd, reg);
+    res.innerHTML = `Taxa do rastreamento: R$ ${rastreamento}<br>Valor do frete pelas peças: R$ ${(qtd * preco) + (resto * desconto)}<br>Total do frete: R$ ${precoTotal}`;
 };
