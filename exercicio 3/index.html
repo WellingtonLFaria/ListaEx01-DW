@@ -3,9 +3,27 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exercício 3</title>
-    <script src="./index.js" defer></script>
+    <title>Exercicio 3</title>
+    <script src="index.js" defer></script>
 </head>
 <body>
+    <div style="display: flex; flex-direction: column; width: 300px; transform: translate(-50%, -50%); position: absolute; top: 50%; left: 50%; border: 2px black solid; padding: 3px; border-radius: 5px;">
+        <div style="display: flex; justify-content: center;">
+            <input type="radio" name="rastreamento" id="rastreamento" value="200">
+            <label for="rastreamento">Rastrear</label>
+        </div>
+        <div style="display: flex; justify-content: center;">
+            <input type="radio" name="rastreamento" id="rastreamento" value="0">
+            <label for="rastreamento">Não rastrear</label>
+        </div>
+        <label for="distancia">Distância(Km): </label>
+        <input type="number" name="distancia" id="distancia">
+        <label for="qtd">Quantidade de peças: </label>
+        <input type="number" name="qtd" id="qtd">
+        <label for="regiao">Região: </label>
+        <input type="number" name="regiao" id="regiao">
+        <button id="enviar" style="margin-top: 2px;">Enviar</button>
+        <p id="res" style="text-align: center; font-weight: bold;"></p>
+    </div>
 </body>
 </html>

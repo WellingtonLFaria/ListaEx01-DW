@@ -1,4 +1,3 @@
-"use strict";
 function verificaIdade(idade) {
     if (idade >= 0 && idade < 15) {
         return "Criança";

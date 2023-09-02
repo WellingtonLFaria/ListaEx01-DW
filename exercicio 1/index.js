@@ -1,4 +1,3 @@
-"use strict";
 // Classe para a criação dos campos de entrada do usuário
 class campoEntradaUsuario {
     constructor(nome, tipo, parente) {

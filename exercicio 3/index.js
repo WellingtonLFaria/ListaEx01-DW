@@ -1,58 +1,41 @@
-"use strict";
-const peso1 = 2;
-const peso2 = 5;
-const peso3 = 3;
-function calcularMedia(nota1, nota2, nota3) {
-    let media = ((nota1 * peso1) + (nota2 * peso2) + (nota3 * peso3)) / (peso1 + peso2 + peso3);
-    let classificacao;
-    if (media > 9 && media <= 10) {
-        classificacao = "A";
+const campoDistancia = document.getElementById("distancia");
+const campoQtd = document.getElementById("qtd");
+const campoRegiao = document.getElementById("regiao");
+const enviar = document.getElementById("enviar");
+const res = document.getElementById("res");
+enviar.onclick = () => {
+    let rastreamentos = document.getElementsByName("rastreamento");
+    let rastreamento;
+    for (let c in rastreamentos) {
+        if (rastreamentos[c].checked) {
+            rastreamento = Number(rastreamentos[c].value);
+        }
     }
-    else if (media > 8 && media <= 9) {
-        classificacao = "B";
+    let distancia = Number(campoDistancia.value);
+    let qtd = Number(campoQtd.value);
+    let regiao = Number(campoRegiao.value);
+    let preco = 0;
+    let desconto = 0;
+    let resto = 0;
+    if (qtd > 1000) {
+        resto = qtd - 1000;
+        qtd = 1000;
     }
-    else if (media > 7 && media <= 8) {
-        classificacao = "C";
+    ;
+    switch (regiao) {
+        case 1:
+            preco = 1;
+            desconto = 1 - (1 * 10 / 100);
+            break;
+        case 2:
+            preco = 1.2;
+            desconto = 1.2 - (1.2 * 12 / 100);
+            break;
+        case 3:
+            preco = 1.3;
+            desconto = 1.3 - (1.3 * 13 / 100);
+            break;
     }
-    else if (media > 6 && media <= 7) {
-        classificacao = "D";
-    }
-    else if (media > 5 && media <= 6) {
-        classificacao = "E";
-    }
-    else if (media >= 0 && media <= 5) {
-        classificacao = "F";
-    }
-    return [media, classificacao];
-}
-;
-const labelAtividade1 = document.createElement("label");
-labelAtividade1.innerText = "Nota atividade 1:";
-const campoAtividade1 = document.createElement("input");
-campoAtividade1.type = "number";
-const labelAtividade2 = document.createElement("label");
-labelAtividade2.innerText = "Nota atividade 2:";
-const campoAtividade2 = document.createElement("input");
-campoAtividade2.type = "number";
-const labelAtividade3 = document.createElement("label");
-labelAtividade3.innerText = "Nota atividade 3:";
-const campoAtividade3 = document.createElement("input");
-campoAtividade3.type = "number";
-const submit = document.createElement("button");
-submit.innerText = "Enviar";
-const res = document.createElement("p");
-document.body.appendChild(labelAtividade1);
-document.body.appendChild(campoAtividade1);
-document.body.appendChild(labelAtividade2);
-document.body.appendChild(campoAtividade2);
-document.body.appendChild(labelAtividade3);
-document.body.appendChild(campoAtividade3);
-document.body.appendChild(submit);
-document.body.appendChild(res);
-submit.onclick = () => {
-    let nota1 = Number(campoAtividade1.value);
-    let nota2 = Number(campoAtividade2.value);
-    let nota3 = Number(campoAtividade3.value);
-    let media = calcularMedia(nota1, nota2, nota3);
-    res.innerText = `Média: ${media[0]} | Classificação: ${media[1]}`;
+    let precoTotal = (qtd * preco) + (resto * desconto) + rastreamento;
+    res.innerHTML = `Taxa do rastreamento: R$ ${rastreamento}<br>Valor do frete pelas peças: R$ ${(qtd * preco) + (resto * desconto)}<br>Total do frete: R$ ${precoTotal}`;
 };

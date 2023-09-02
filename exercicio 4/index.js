@@ -1,42 +1,57 @@
-"use strict";
-const campoDistancia = document.getElementById("distancia");
-const campoQtd = document.getElementById("qtd");
-const campoRegiao = document.getElementById("regiao");
-const enviar = document.getElementById("enviar");
+const camposTurno = document.getElementsByName("turno");
+const camposCategoria = document.getElementsByName("categoria");
+const campoCodigo = document.getElementById("codigo");
+const campoHoras = document.getElementById("horas");
+const campoSalario = document.getElementById("salario");
+const button = document.getElementById("submit");
 const res = document.getElementById("res");
-enviar.onclick = () => {
-    let rastreamentos = document.getElementsByName("rastreamento");
-    let rastreamento;
-    for (let c in rastreamentos) {
-        if (rastreamentos[c].checked) {
-            rastreamento = Number(rastreamentos[c].value);
-        }
-    }
-    let distancia = Number(campoDistancia.value);
-    let qtd = Number(campoQtd.value);
-    let regiao = Number(campoRegiao.value);
-    let preco = 0;
-    let desconto = 0;
-    let resto = 0;
-    if (qtd > 1000) {
-        resto = qtd - 1000;
-        qtd = 1000;
-    }
-    ;
-    switch (regiao) {
-        case 1:
-            preco = 1;
-            desconto = 1 - (1 * 10 / 100);
-            break;
-        case 2:
-            preco = 1.2;
-            desconto = 1.2 - (1.2 * 12 / 100);
-            break;
-        case 3:
-            preco = 1.3;
-            desconto = 1.3 - (1.3 * 13 / 100);
-            break;
-    }
-    let precoTotal = (qtd * preco) + (resto * desconto) + rastreamento;
-    res.innerHTML = `Taxa do rastreamento: R$ ${rastreamento}<br>Valor do frete pelas peças: R$ ${(qtd * preco) + (resto * desconto)}<br>Total do frete: R$ ${precoTotal}`;
+
+button.onclick = () => {
+    let turno;
+    let categoria;
+    let codigo;
+    let horas;
+    let salario;
+    let valorHoraTrabalhada;
+    let salarioInicial;
+    let auxiloAlimentacao;
+
+    camposTurno.forEach(campoTurno => {
+        if (campoTurno.checked) {
+            turno = campoTurno.value;
+        };
+    });
+
+    camposCategoria.forEach(campoCategoria => {
+        if (campoCategoria.checked) {
+            categoria = campoCategoria.value;
+        };
+    });
+
+    codigo = Number(campoCodigo.value);
+    horas = Number(campoHoras.value);
+    salario = Number(campoSalario.value);
+
+    if (categoria=="G" && (turno == "M" || turno == "V")) {
+        valorHoraTrabalhada = salario*(4/100);
+    } else if (categoria == "F" && turno == "N") {
+        valorHoraTrabalhada = salario*(2/100);
+    } else if (categoria == "F" && (turno == "M" || turno == "V")) {
+        valorHoraTrabalhada = salario*(1/100);
+    };
+
+    salarioInicial = valorHoraTrabalhada * horas;
+
+    if (salarioInicial <= 800) {
+        auxiloAlimentacao = salarioInicial*(25/100);
+    } else if (salarioInicial > 800 && salarioInicial <= 1200) {
+        auxiloAlimentacao = salarioInicial*(20/100);
+    } else if (salarioInicial > 1200) {
+        auxiloAlimentacao = salarioInicial*(15/100);
+    };
+
+    let salarioFinal = salarioInicial + auxiloAlimentacao;
+
+    res.innerHTML = `Número de horas trabalhadas: ${horas}<br>Valor da hora trabalhada: R$ ${valorHoraTrabalhada.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}<br>Salário Inicial: R$ ${salarioInicial.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}<br>Auxílio alimentação: R$ ${auxiloAlimentacao.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}<br>Salário final: R$ ${salarioFinal.toLocaleString('pt-br',{style: 'currency', currency: 'BRL'})}`
+    console.log(turno, categoria, codigo, horas, salario);
 };
